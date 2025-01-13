@@ -1,20 +1,36 @@
 grammar Nimble ;
 
-uni : ('-' | '!') expr ;
+//do spaces for everything
+
+return : 'return' ' '* expr?;
+
+if : 'if' ' '* expr ' '* '{' (expr | statement | var)* ' '* '}' ' '* else?;
+
+else : 'else' ' '* '{' (expr | statement | var)* ' '* '}' ;
+
+statement : assignment | print | while ;
+
+assignment : ID ' '* '=' ' '* expr ;
+
+print : ' '* expr ;
+
+while : 'while' ' '* expr ' '* '{' ' '* (expr | statement | var)* ' '* '}';
+
+unary : ('-' | '!') expr ;
 
 binexp : binary expr ;
 
 binary : OPEQ | OPPM | OPMD ;
 
-expr : liter | ID ;
+expr : literal | unary | binexp | parexp | fxncall | ID ;
 
-liter : INT | BOOL | STRING ;
+literal : INT | BOOL | STRING ;
 
 parexp : '(' expr ')' ;
 
-fxncall : ID ' '* '(' ' '* mlsequence* ' '* ID ' '* ':' ' '* liter ' '* ')' ;
+fxncall : ID ' '* '(' ' '* mlsequence* ' '* ID ' '* ':' ' '* literal ' '* ')' ;
 
-mlsequence : ID ':' liter ',' ;
+mlsequence : ID ':' literal ',' ;
 
 var : 'var' ' '* ID ' '* ':' ' '* TYPENAME ' '* '=' ' '* expr ;
 
@@ -39,7 +55,7 @@ BOOL : ('true')|('false') ;
 STRING : ["](((' '..'[')  |  (']'..'~'))  |  ('\\a')  |  ('\\b')  |  ('\\f')  |  ('\\n')  |  ('\\r')  |  ('\\t')
                |  ('\\v')  |  ('\\\\')  |  ('\\\'')  |  ('\\"')  |  ('\\?'))*["] ;
 
-ID : [A-Za-z_][A-Za-z_0-9]+ ;
+ID : [A-Za-z_][A-Za-z_0-9]* ;
 COMMENT : '//' ~[\r\n]* -> skip ;
 WS : [ \t\r\n]+ -> skip ;
 
