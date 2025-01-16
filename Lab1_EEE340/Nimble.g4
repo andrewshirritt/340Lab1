@@ -2,6 +2,22 @@ grammar Nimble ;
 
 //do spaces for everything
 
+//not sure if the fxncall statement is done yet.
+
+program : fxndef ' '* 
+          mainblock ' '* ;
+
+mainblock : var* ' '* statement*;
+
+paramdecl : ID ' '* ':' ' '* literal ' '* ;
+
+fxndef : 'func' ' '* ID ' '* '(' ' '* mlsequence* ' '* ID* ' '* ')' ' '* ('->' ' '* literal ')? '* '{'
+        var* ' '* 
+        statement* ' '* 
+        '}' ;
+
+//end of new stuff
+
 return : 'return' ' '* expr?;
 
 if : 'if' ' '* expr ' '* '{' (expr | statement | var)* ' '* '}' ' '* else?;
@@ -28,7 +44,7 @@ literal : INT | BOOL | STRING ;
 
 parexp : '(' expr ')' ;
 
-fxncall : ID ' '* '(' ' '* mlsequence* ' '* ID ' '* ':' ' '* literal ' '* ')' ;
+fxncall : ID ' '* '(' ' '* mlsequence* ' '* ID* ' '* ':' ' '* literal ' '* ')' ;
 
 mlsequence : ID ':' literal ',' ;
 
