@@ -1,0 +1,20 @@
+==================== VALID STRING LITERALS ======================
+"Hello"
+"Hello123   ][]-~~````````````!@#$%^&*()_+|"
+
+"\n"
+"hhhhhhhhhhhhhhh\n"
+
+=================== INVALID STRING LITERALS =====================
+"Hello
+Hello123   ][]-~~````````````!@#$%^&*()_+|
+
+"\m"
+
+"hhhhhhhhhhhhhhh\m"
+
+====================VALID FUNCTION CALL======================
+print(boi:10, three:3)
+
+====================INVALID FUNCTION CALL======================
+print(10,3)
