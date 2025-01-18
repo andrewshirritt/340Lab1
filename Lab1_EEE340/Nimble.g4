@@ -7,16 +7,22 @@ grammar Nimble ;
 program : fxndef ' '* 
           mainblock ' '* ;
 
-mainblock : var* ' '* statement*;
+mainblock : ' '* var* ' '* statement*;
 
-paramdecl : ID ' '* ':' ' '* literal ' '* ;
+statement : assignment | print | while | if | return | fxncall ;
 
-fxndef : 'func' ' '* ID ' '* '(' ' '* mlsequence* ' '* ID* ' '* ')' ' '* ('->' ' '* literal ')? '* '{'
+expr : literal | unary | binexp | parexp | fxncall | ID ;
+
+paramdecl : ID ' '* ':' ' '* TYPENAME ' '* ;
+
+fxndef : 'func' ' '* ID ' '* '(' ' '* fxnsequence* ' '* ID* ' '* ':' ' '* TYPENAME ')' ' '* ('->' ' '* TYPENAME ' '* '{'
         var* ' '* 
         statement* ' '* 
-        '}' ;
+        '}') ;
 
 //end of new stuff
+
+var : 'var' ' '* ID ' '* ':' ' '* TYPENAME ' '* '=' ' '* expr ;
 
 return : 'return' ' '* expr?;
 
@@ -24,11 +30,9 @@ if : 'if' ' '* expr ' '* '{' (expr | statement | var)* ' '* '}' ' '* else?;
 
 else : 'else' ' '* '{' (expr | statement | var)* ' '* '}' ;
 
-statement : assignment | print | while ;
-
 assignment : ID ' '* '=' ' '* expr ;
 
-print : ' '* expr ;
+print : 'print' ' '* expr ;
 
 while : 'while' ' '* expr ' '* '{' ' '* (expr | statement | var)* ' '* '}';
 
@@ -38,8 +42,6 @@ binexp : binary expr ;
 
 binary : OPEQ | OPPM | OPMD ;
 
-expr : literal | unary | binexp | parexp | fxncall | ID ;
-
 literal : INT | BOOL | STRING ;
 
 parexp : '(' expr ')' ;
@@ -48,7 +50,8 @@ fxncall : ID ' '* '(' ' '* mlsequence* ' '* ID* ' '* ':' ' '* literal ' '* ')' ;
 
 mlsequence : ID ':' literal ',' ;
 
-var : 'var' ' '* ID ' '* ':' ' '* TYPENAME ' '* '=' ' '* expr ;
+fxnsequence : ID ':' TYPENAME ',' ;
+
 
 
 
